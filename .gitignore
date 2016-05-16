@@ -1,0 +1,6 @@
+/vendor/
+/app/runtime/
+/www/assets/
+composer.lock
+/.idea/
+

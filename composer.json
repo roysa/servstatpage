@@ -1,0 +1,12 @@
+{
+    "name": "roysa/servstatpage",
+    "require": {
+        "yiisoft/yii": "^1.1"
+    },
+    "authors": [
+        {
+            "name": "Dmitry Sylkin",
+            "email": "roysa@valant.com.ua"
+        }
+    ]
+}
