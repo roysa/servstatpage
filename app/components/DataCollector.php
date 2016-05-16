@@ -176,8 +176,8 @@ class DataCollector
                 $info['adapter'] = $adapter;
                 $info['sensors'] = array();
             } else {
-                if (preg_match('/^(.*?)\:\s+([\+\-\d\.]+)\s+C\s+(.*?)$/', $l, $m)) {
-                    $info['sensors'][] = array('temperature' => (float)$m[2], 'additional' => $m[3], 'name' => $m[1]);
+                if (preg_match('/^(.*?)\:\s+([\+\-\d\.]+)\s+C\s*(.*?)$/', $l, $m)) {
+                    $info['sensors'][] = array('temperature' => (float)$m[2], 'additional' => isset($m[3]) ? $m[3] : '', 'name' => $m[1]);
                 }
             }
         }
