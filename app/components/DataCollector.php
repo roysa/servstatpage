@@ -186,7 +186,80 @@ class DataCollector
             $total[] = $info;
         }
 
+
+        // Ttry to get HDDs. This requires 'hddtemp' to be installed with SUID
+        $info['adapted'] = 'drives';
+        $info['name'] = 'drives';
+        $info['sensors'] = array();
+        $disks = self::getDisks();
+        foreach ($disks as $disk) {
+            $dev = '/dev/' . $disk['name'];
+            $out = null;
+            $command = 'hddtemp ' . $dev;
+            exec($command, $out);
+            if ($out) {
+                foreach ($out as $line) {
+                    if (preg_match('/:\s+([\d\-\+\.]+)\s+/', $line, $m)) {
+                        $info['sensors'][] = array(
+                            'temperature' => (float)$m[1],
+                            'additional' => '',
+                            'name' => $disk['name'],
+                        );
+                    }
+                }
+            }
+        }
+        if ($info['sensors']) {
+            $total[] = $info;
+        }
+
         return $total;
+
+    }
+
+    public static function getDisks()
+    {
+        $out = null;
+        exec('lsblk', $out);
+
+        $st = 0;
+        $disk = null;
+        $data = array();
+
+        foreach ($out as $line) {
+
+            if (preg_match('/^(.*?)disk$/', $line, $m)) {
+                $st = 1;
+                if ($disk) {
+                    $data[] = $disk;
+                }
+                $info = preg_replace('/\s+/', ' ', $m[1]);
+                $info = explode(' ', $info);
+                $disk = array(
+                    'name' => $info[0],
+                    'size_h' => $info[3],
+                    'partitions' => array(),
+                );
+            } elseif ($st === 1 && preg_match('/^[^\w]+(.*?)part(.*?)$/', $line, $m)) {
+
+                $info = preg_replace('/\s+/', ' ', $m[1]);
+                $info = explode(' ', $info);
+
+                $disk['partitions'][] = array(
+                    'name' => $info[0],
+                    'size_h' => $info['3'],
+                    'mountpoint' => isset($m[2]) ? $m[2] : null,
+                );
+
+            }
+
+        }
+
+        if ($disk) {
+            $data[] = $disk;
+        }
+
+        return $data;
 
     }
 

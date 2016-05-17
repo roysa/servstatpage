@@ -62,7 +62,7 @@
                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inet: <?= $section['inet'] ?>
                 <?php endif; ?>
                 <?php if ($section['inet6']) : ?>
-                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inet6: <?= $section['inet'] ?>
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inet6: <?= $section['inet6'] ?>
                 <?php endif; ?>
                 <?php if ($section['hw']) : ?>
                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hw: <?= $section['hw'] ?>
